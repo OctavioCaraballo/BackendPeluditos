@@ -1,30 +1,26 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Peludito} from '../models';
 import {PeluditoRepository} from '../repositories';
 
+@authenticate('admin')
 export class PeluditoController {
   constructor(
     @repository(PeluditoRepository)
-    public peluditoRepository : PeluditoRepository,
-  ) {}
+    public peluditoRepository: PeluditoRepository,
+  ) { }
 
   @post('/peluditos')
   @response(200, {
@@ -47,6 +43,7 @@ export class PeluditoController {
     return this.peluditoRepository.create(peludito);
   }
 
+  @authenticate.skip()
   @get('/peluditos/count')
   @response(200, {
     description: 'Peludito model count',
